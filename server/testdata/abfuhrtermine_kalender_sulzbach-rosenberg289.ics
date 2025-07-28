@@ -1,0 +1,789 @@
+BEGIN:VCALENDAR
+PRODID:Landkreis Amberg-Sulzbach; https://www.amberg-sulzbach.de
+VERSION:2.0
+METHOD:Publish
+X-WR-CALNAME:Abfuhrtermine_Sulzbach-Rosenberg2892025
+X-WR-TIMEZONE:Europe/Berlin
+BEGIN:VTIMEZONE
+TZID:W. Europe Standard Time
+BEGIN:STANDARD
+DTSTART:16011028T030000
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0000
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:16010325T020000
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0000
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:1911202401@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250111T060000Z
+DTEND;TZID="W. Europe Standard Time":20250111T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll  ! nachgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202402@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250124T060000Z
+DTEND;TZID="W. Europe Standard Time":20250124T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202403@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250207T060000Z
+DTEND;TZID="W. Europe Standard Time":20250207T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202404@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250221T060000Z
+DTEND;TZID="W. Europe Standard Time":20250221T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202405@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250307T060000Z
+DTEND;TZID="W. Europe Standard Time":20250307T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202406@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250321T060000Z
+DTEND;TZID="W. Europe Standard Time":20250321T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202407@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250404T060000Z
+DTEND;TZID="W. Europe Standard Time":20250404T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202408@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250417T060000Z
+DTEND;TZID="W. Europe Standard Time":20250417T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll  ! vorgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202409@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250503T060000Z
+DTEND;TZID="W. Europe Standard Time":20250503T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll  ! nachgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024010@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250516T060000Z
+DTEND;TZID="W. Europe Standard Time":20250516T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024011@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250531T060000Z
+DTEND;TZID="W. Europe Standard Time":20250531T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll  ! nachgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024012@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250614T060000Z
+DTEND;TZID="W. Europe Standard Time":20250614T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll  ! nachgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024013@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250627T060000Z
+DTEND;TZID="W. Europe Standard Time":20250627T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024014@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250711T060000Z
+DTEND;TZID="W. Europe Standard Time":20250711T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024015@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250725T060000Z
+DTEND;TZID="W. Europe Standard Time":20250725T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024016@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250808T060000Z
+DTEND;TZID="W. Europe Standard Time":20250808T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024017@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250822T060000Z
+DTEND;TZID="W. Europe Standard Time":20250822T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024018@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250905T060000Z
+DTEND;TZID="W. Europe Standard Time":20250905T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024019@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250919T060000Z
+DTEND;TZID="W. Europe Standard Time":20250919T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024020@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20251004T060000Z
+DTEND;TZID="W. Europe Standard Time":20251004T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll  ! nachgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024021@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20251017T060000Z
+DTEND;TZID="W. Europe Standard Time":20251017T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024022@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20251031T060000Z
+DTEND;TZID="W. Europe Standard Time":20251031T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024023@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20251114T060000Z
+DTEND;TZID="W. Europe Standard Time":20251114T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024024@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20251128T060000Z
+DTEND;TZID="W. Europe Standard Time":20251128T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024025@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20251212T060000Z
+DTEND;TZID="W. Europe Standard Time":20251212T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024026@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED;VALUE=DATE-TIME:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20251227T060000Z
+DTEND;TZID="W. Europe Standard Time":20251227T070000Z
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP;VALUE=DATE-TIME:20250106T223418
+SUMMARY:Restmüll  ! nachgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED;VALUE=DATE-TIME:20250106T223418
+PRIORITY:5
+SEQUENCE:0
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202411@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250104T060000
+DTEND;TZID="W. Europe Standard Time":20250104T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier  ! nachgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202412@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250131T060000
+DTEND;TZID="W. Europe Standard Time":20250131T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202413@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250228T060000
+DTEND;TZID="W. Europe Standard Time":20250228T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202414@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250328T060000
+DTEND;TZID="W. Europe Standard Time":20250328T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202415@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250426T060000
+DTEND;TZID="W. Europe Standard Time":20250426T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier  ! nachgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202416@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250523T060000
+DTEND;TZID="W. Europe Standard Time":20250523T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202417@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250621T060000
+DTEND;TZID="W. Europe Standard Time":20250621T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier  ! nachgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202418@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250718T060000
+DTEND;TZID="W. Europe Standard Time":20250718T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:1911202419@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250816T060000
+DTEND;TZID="W. Europe Standard Time":20250816T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier  ! nachgefahren ! | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024110@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20250912T060000
+DTEND;TZID="W. Europe Standard Time":20250912T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024111@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20251010T060000
+DTEND;TZID="W. Europe Standard Time":20251010T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024112@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20251107T060000
+DTEND;TZID="W. Europe Standard Time":20251107T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+UID:19112024113@amberg-sulzbach.de
+CLASS:PUBLIC
+CREATED:20250106T223418Z
+DESCRIPTION:Abfuhrkalender für die Gemeinde Sulzbach-Rosenberg, Südstraße. Alle Angaben ohne Gewähr (Stand: 18.11.2024). Weitere Informationen finden Sie unter www.amberg-sulzbach.de/abfallwirtschaft/ -> Abfuhrkalender
+DTSTART;TZID="W. Europe Standard Time":20251205T060000
+DTEND;TZID="W. Europe Standard Time":20251205T070000
+BEGIN:VALARM
+TRIGGER:-PT18H
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+LOCATION:Sulzbach-Rosenberg, Südstraße
+DTSTAMP:20250106T223418Z
+SUMMARY:Altpapier | Abfuhrkalender - Landkreis Amberg-Sulzbach
+URL;VALUE=URI:https://www.landkreis-as.de/abfallwirtschaft/
+LAST-MODIFIED:20250106T223418Z
+PRIORITY:5
+SEQUENCE:0
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
