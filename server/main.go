@@ -207,7 +207,12 @@ func FixICalData(icalData []byte) (string, error) {
 }
 
 // handleHealth provides a simple health check endpoint
-func handleHealth(w http.ResponseWriter, _ *http.Request) {
+func handleHealth(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	if _, err := w.Write([]byte(`{"status":"healthy","service":"ical-proxy"}`)); err != nil {
