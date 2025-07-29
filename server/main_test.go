@@ -31,7 +31,7 @@ END:VEVENT
 END:VCALENDAR`), nil
 }
 
-func TestHandleFixIcalWithURL(t *testing.T) {
+func TestHandleProxyWithURL(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		icalData := "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Test Event\nDTSTART:20250727T120000Z\nDTEND:20250727T130000Z\nEND:VEVENT\nEND:VCALENDAR"
 		w.Header().Set("Content-Type", "text/calendar")
@@ -40,9 +40,9 @@ func TestHandleFixIcalWithURL(t *testing.T) {
 	}))
 	defer server.Close()
 
-	req := httptest.NewRequest(http.MethodGet, "/fix-ical?url="+server.URL, nil)
+	req := httptest.NewRequest(http.MethodGet, "/proxy?url="+server.URL, nil)
 	w := httptest.NewRecorder()
-	handleFixIcal(w, req)
+	handleProxy(w, req)
 
 	resp := w.Result()
 	if resp.StatusCode != http.StatusOK {
@@ -56,12 +56,12 @@ func TestHandleFixIcalWithURL(t *testing.T) {
 	}
 }
 
-func TestHandleFixIcalWithRealWorldURL(t *testing.T) {
+func TestHandleProxyWithRealWorldURL(t *testing.T) {
 	realWorldURL := "https://www.amberg-sulzbach.de/abfallwirtschaft/abfuhrtermine_kalender_sulzbach-rosenberg289.ics"
 
-	req := httptest.NewRequest(http.MethodGet, "/fix-ical?url="+realWorldURL, nil)
+	req := httptest.NewRequest(http.MethodGet, "/proxy?url="+realWorldURL, nil)
 	w := httptest.NewRecorder()
-	handleFixIcal(w, req)
+	handleProxy(w, req)
 
 	resp := w.Result()
 	if resp.StatusCode != http.StatusOK {
@@ -944,5 +944,248 @@ func TestValidationFunctions(t *testing.T) {
 		if isValidActionValue(action) {
 			t.Errorf("ACTION '%s' should be invalid but was accepted", action)
 		}
+	}
+}
+
+// Test the health endpoint
+func TestHealthEndpoint(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/health", nil)
+	w := httptest.NewRecorder()
+	handleHealth(w, req)
+
+	resp := w.Result()
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("Expected status OK, got %v", resp.Status)
+	}
+
+	expectedContentType := "application/json"
+	if resp.Header.Get("Content-Type") != expectedContentType {
+		t.Errorf("Expected Content-Type %s, got %s", expectedContentType, resp.Header.Get("Content-Type"))
+	}
+
+	responseBody := w.Body.String()
+	expected := `{"status":"healthy","service":"ical-proxy"}`
+	if responseBody != expected {
+		t.Errorf("Expected response body %s, got %s", expected, responseBody)
+	}
+}
+
+// Test health endpoint with invalid method
+func TestHealthEndpointInvalidMethod(t *testing.T) {
+	req := httptest.NewRequest(http.MethodPost, "/health", nil)
+	w := httptest.NewRecorder()
+	handleHealth(w, req)
+
+	resp := w.Result()
+	if resp.StatusCode != http.StatusMethodNotAllowed {
+		t.Errorf("Expected status Method Not Allowed, got %v", resp.Status)
+	}
+}
+
+// Test date filtering functionality
+func TestDateFiltering(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		icalData := `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Test//Test Calendar//EN
+BEGIN:VEVENT
+UID:event1@example.com
+DTSTART:20250101T120000Z
+DTEND:20250101T130000Z
+SUMMARY:New Year Event
+END:VEVENT
+BEGIN:VEVENT
+UID:event2@example.com
+DTSTART:20250615T140000Z
+DTEND:20250615T150000Z
+SUMMARY:Summer Event
+END:VEVENT
+BEGIN:VEVENT
+UID:event3@example.com
+DTSTART:20251225T180000Z
+DTEND:20251225T190000Z
+SUMMARY:Christmas Event
+END:VEVENT
+END:VCALENDAR`
+		w.Header().Set("Content-Type", "text/calendar")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(icalData))
+	}))
+	defer server.Close()
+
+	testCases := []struct {
+		name           string
+		fromDate       string
+		toDate         string
+		expectedEvents []string
+	}{
+		{
+			name:           "No date filtering",
+			fromDate:       "",
+			toDate:         "",
+			expectedEvents: []string{"New Year Event", "Summer Event", "Christmas Event"},
+		},
+		{
+			name:           "Filter to summer only",
+			fromDate:       "2025-06-01",
+			toDate:         "2025-08-31",
+			expectedEvents: []string{"Summer Event"},
+		},
+		{
+			name:           "Filter from start of year",
+			fromDate:       "2025-01-01",
+			toDate:         "2025-06-30",
+			expectedEvents: []string{"New Year Event", "Summer Event"},
+		},
+		{
+			name:           "Filter to end of year",
+			fromDate:       "2025-12-01",
+			toDate:         "",
+			expectedEvents: []string{"Christmas Event"},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			url := "/proxy?url=" + server.URL
+			if tc.fromDate != "" {
+				url += "&from=" + tc.fromDate
+			}
+			if tc.toDate != "" {
+				url += "&to=" + tc.toDate
+			}
+
+			req := httptest.NewRequest(http.MethodGet, url, nil)
+			w := httptest.NewRecorder()
+			handleProxy(w, req)
+
+			resp := w.Result()
+			if resp.StatusCode != http.StatusOK {
+				t.Errorf("Expected status OK, got %v", resp.Status)
+			}
+
+			responseBody := w.Body.String()
+			for _, expectedEvent := range tc.expectedEvents {
+				if !strings.Contains(responseBody, expectedEvent) {
+					t.Errorf("Expected to find event '%s' in response", expectedEvent)
+				}
+			}
+
+			// Count the number of VEVENT entries to ensure filtering worked
+			eventCount := strings.Count(responseBody, "BEGIN:VEVENT")
+			if eventCount != len(tc.expectedEvents) {
+				t.Errorf("Expected %d events, found %d", len(tc.expectedEvents), eventCount)
+			}
+		})
+	}
+}
+
+// Test date filtering with invalid date formats
+func TestDateFilteringInvalidDates(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/calendar")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR"))
+	}))
+	defer server.Close()
+
+	testCases := []struct {
+		name         string
+		fromDate     string
+		toDate       string
+		expectedCode int
+		expectedMsg  string
+	}{
+		{
+			name:         "Invalid from date format",
+			fromDate:     "2025/01/01",
+			toDate:       "",
+			expectedCode: http.StatusBadRequest,
+			expectedMsg:  "Invalid 'from' date format. Use YYYY-MM-DD",
+		},
+		{
+			name:         "Invalid to date format",
+			fromDate:     "",
+			toDate:       "01-01-2025",
+			expectedCode: http.StatusBadRequest,
+			expectedMsg:  "Invalid 'to' date format. Use YYYY-MM-DD",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			url := "/proxy?url=" + server.URL
+			if tc.fromDate != "" {
+				url += "&from=" + tc.fromDate
+			}
+			if tc.toDate != "" {
+				url += "&to=" + tc.toDate
+			}
+
+			req := httptest.NewRequest(http.MethodGet, url, nil)
+			w := httptest.NewRecorder()
+			handleProxy(w, req)
+
+			resp := w.Result()
+			if resp.StatusCode != tc.expectedCode {
+				t.Errorf("Expected status %d, got %v", tc.expectedCode, resp.Status)
+			}
+
+			responseBody := w.Body.String()
+			if !strings.Contains(responseBody, tc.expectedMsg) {
+				t.Errorf("Expected error message containing '%s', got '%s'", tc.expectedMsg, responseBody)
+			}
+		})
+	}
+}
+
+// Test proxy endpoint error cases
+func TestProxyEndpointErrors(t *testing.T) {
+	testCases := []struct {
+		name         string
+		method       string
+		url          string
+		expectedCode int
+		expectedMsg  string
+	}{
+		{
+			name:         "Invalid method",
+			method:       http.MethodPost,
+			url:          "/proxy?url=http://example.com/calendar.ics",
+			expectedCode: http.StatusMethodNotAllowed,
+			expectedMsg:  "Invalid request method",
+		},
+		{
+			name:         "Missing URL parameter",
+			method:       http.MethodGet,
+			url:          "/proxy",
+			expectedCode: http.StatusBadRequest,
+			expectedMsg:  "Missing 'url' parameter",
+		},
+		{
+			name:         "Invalid URL parameter",
+			method:       http.MethodGet,
+			url:          "/proxy?url=not-a-url",
+			expectedCode: http.StatusBadRequest,
+			expectedMsg:  "Invalid 'url' parameter",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			req := httptest.NewRequest(tc.method, tc.url, nil)
+			w := httptest.NewRecorder()
+			handleProxy(w, req)
+
+			resp := w.Result()
+			if resp.StatusCode != tc.expectedCode {
+				t.Errorf("Expected status %d, got %v", tc.expectedCode, resp.Status)
+			}
+
+			responseBody := w.Body.String()
+			if !strings.Contains(responseBody, tc.expectedMsg) {
+				t.Errorf("Expected error message containing '%s', got '%s'", tc.expectedMsg, responseBody)
+			}
+		})
 	}
 }
