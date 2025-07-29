@@ -7,6 +7,10 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   GO_VERSION: "1.24"
 
@@ -27,9 +31,11 @@ jobs:
         path: |
           ~/.cache/go-build
           ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}-${{ github.run_id }}
         restore-keys: |
+          ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           ${{ runner.os }}-go-
+      continue-on-error: true
 
     - name: Download dependencies
       run: go mod download
@@ -66,9 +72,11 @@ jobs:
         path: |
           ~/.cache/go-build
           ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}-${{ github.run_id }}
         restore-keys: |
+          ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           ${{ runner.os }}-go-
+      continue-on-error: true
 
     - name: Build for Linux
       run: |
@@ -131,6 +139,7 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
+      continue-on-error: false
 
   static-analysis:
     runs-on: ubuntu-latest
@@ -164,3 +173,4 @@ jobs:
       with:
         version: latest
         args: --timeout=5m
+        skip-cache: true
