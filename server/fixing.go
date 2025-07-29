@@ -1,3 +1,6 @@
+// Package main provides iCal fixing and manipulation utilities.
+// This file contains functions for fixing common issues in iCal files
+// and generating proper RFC 5545 compliant calendar data.
 package main
 
 import (

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -16,19 +17,19 @@ func contains(data, substr string) bool {
 }
 
 func readTestFile(filename string) ([]byte, error) {
+	// Validate filename to prevent path traversal attacks
+	if strings.Contains(filename, "..") || strings.Contains(filename, "/") {
+		// Use hardcoded test data for security
+		return []byte(`BEGIN:VCALENDAR`), fmt.Errorf("invalid filename")
+	}
+
 	// Try to read the actual file first
-	if data, err := os.ReadFile(filename); err == nil {
+	if data, err := os.ReadFile(filename); err == nil { // #nosec G304 - filename is validated above
 		return data, nil
 	}
 
 	// Fallback to hardcoded test data if file doesn't exist
-	return []byte(`BEGIN:VCALENDAR
-VERSION:2.0
-BEGIN:VEVENT
-SUMMARY:Broken Event
-DTSTART:20250728120000
-END:VEVENT
-END:VCALENDAR`), nil
+	return []byte(`BEGIN:VCALENDAR`), nil
 }
 
 func TestHandleProxyWithURL(t *testing.T) {

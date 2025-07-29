@@ -89,7 +89,11 @@ func handleProxy(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to fetch iCal file", http.StatusInternalServerError)
 		return
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if closeErr := resp.Body.Close(); closeErr != nil {
+			log.Printf("Error closing response body: %v", closeErr)
+		}
+	}()
 
 	icalData, err := io.ReadAll(resp.Body)
 	if err != nil {
