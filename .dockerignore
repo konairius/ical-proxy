@@ -1,0 +1,31 @@
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+LICENSE
+rfc5545.txt
+rfc7986.txt
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+server/server
+*.exe
+
+# Test files and testdata (only if not needed for runtime)
+# server/testdata/
+
+# Docker files (don't copy into container)
+Dockerfile
+.dockerignore
+docker-compose.yml

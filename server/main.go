@@ -7,18 +7,28 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
+	"time"
 
 	ics "github.com/arran4/golang-ical"
 )
 
 func main() {
-	http.HandleFunc("/fix-ical", handleFixIcal)
-	port := ":8080"
+	http.HandleFunc("/proxy", handleProxy)
+	http.HandleFunc("/health", handleHealth)
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	fmt.Printf("Starting server on port %s\n", port)
-	http.ListenAndServe(port, nil)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatalf("Failed to start server on port %s: %v", port, err)
+	}
 }
 
-func handleFixIcal(w http.ResponseWriter, r *http.Request) {
+func handleProxy(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -36,6 +46,30 @@ func handleFixIcal(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Parse optional date filtering parameters
+	fromParam := r.URL.Query().Get("from")
+	toParam := r.URL.Query().Get("to")
+
+	var fromDate, toDate *time.Time
+
+	if fromParam != "" {
+		if parsed, err := time.Parse("2006-01-02", fromParam); err != nil {
+			http.Error(w, "Invalid 'from' date format. Use YYYY-MM-DD", http.StatusBadRequest)
+			return
+		} else {
+			fromDate = &parsed
+		}
+	}
+
+	if toParam != "" {
+		if parsed, err := time.Parse("2006-01-02", toParam); err != nil {
+			http.Error(w, "Invalid 'to' date format. Use YYYY-MM-DD", http.StatusBadRequest)
+			return
+		} else {
+			toDate = &parsed
+		}
+	}
+
 	resp, err := http.Get(urlParam)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		http.Error(w, "Failed to fetch iCal file", http.StatusInternalServerError)
@@ -49,9 +83,9 @@ func handleFixIcal(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fixedICal, err := FixICalData(icalData)
+	fixedICal, err := ProcessICalData(icalData, fromDate, toDate)
 	if err != nil {
-		http.Error(w, "Failed to fix iCal format: "+err.Error(), http.StatusBadRequest)
+		http.Error(w, "Failed to process iCal data: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -60,17 +94,22 @@ func handleFixIcal(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(fixedICal))
 }
 
-// FixICalData takes raw iCal data and returns a fixed, RFC 5545 compliant version
-func FixICalData(icalData []byte) (string, error) {
+// ProcessICalData takes raw iCal data and returns a processed version with optional date filtering
+func ProcessICalData(icalData []byte, fromDate, toDate *time.Time) (string, error) {
 	if len(icalData) == 0 {
 		return "", fmt.Errorf("empty iCal data")
 	}
 
-	log.Printf("Starting iCal fixing process for %d bytes of data", len(icalData))
+	log.Printf("Starting iCal processing for %d bytes of data", len(icalData))
 
 	calendar, err := ics.ParseCalendar(bytes.NewReader(icalData))
 	if err != nil {
 		return "", fmt.Errorf("invalid iCal format: %w", err)
+	}
+
+	// Apply date filtering if specified
+	if fromDate != nil || toDate != nil {
+		filterEventsByDate(calendar, fromDate, toDate)
 	}
 
 	// Apply comprehensive fixes to ensure RFC 5545 compliance
@@ -83,7 +122,82 @@ func FixICalData(icalData []byte) (string, error) {
 	fixedICal = applyPostSerializationFixes(fixedICal, fixLog)
 
 	// Log summary of fixes applied
-	log.Printf("iCal fixing complete. %s", fixLog.GetSummary())
+	log.Printf("iCal processing complete. %s", fixLog.GetSummary())
 
 	return fixedICal, nil
+}
+
+// filterEventsByDate removes events outside the specified date range
+func filterEventsByDate(calendar *ics.Calendar, fromDate, toDate *time.Time) {
+	events := calendar.Events()
+	eventsToRemove := []*ics.VEvent{}
+
+	for _, event := range events {
+		shouldRemove := false
+
+		// Get event start time
+		startProp := event.GetProperty(ics.ComponentPropertyDtStart)
+		if startProp != nil {
+			if eventStart, err := parseEventDate(startProp.Value); err == nil {
+				// Check if event is before fromDate
+				if fromDate != nil && eventStart.Before(*fromDate) {
+					shouldRemove = true
+				}
+
+				// Check if event is after toDate
+				if toDate != nil && eventStart.After(toDate.AddDate(0, 0, 1)) { // Add 1 day to include events on toDate
+					shouldRemove = true
+				}
+			}
+		}
+
+		if shouldRemove {
+			eventsToRemove = append(eventsToRemove, event)
+		}
+	}
+
+	// Remove filtered events
+	for _, event := range eventsToRemove {
+		calendar.RemoveEvent(event.Id())
+	}
+
+	log.Printf("Filtered out %d events based on date range", len(eventsToRemove))
+}
+
+// parseEventDate parses various iCal date formats
+func parseEventDate(dateStr string) (time.Time, error) {
+	// Try different date formats used in iCal
+	formats := []string{
+		"20060102T150405Z",     // UTC format
+		"20060102T150405",      // Local format
+		"20060102",             // Date only
+		"2006-01-02T15:04:05Z", // RFC3339 UTC
+		"2006-01-02T15:04:05",  // RFC3339 local
+		"2006-01-02",           // Date only with dashes
+	}
+
+	for _, format := range formats {
+		if t, err := time.Parse(format, dateStr); err == nil {
+			return t, nil
+		}
+	}
+
+	return time.Time{}, fmt.Errorf("unable to parse date: %s", dateStr)
+}
+
+// FixICalData is kept for backward compatibility but now uses ProcessICalData
+func FixICalData(icalData []byte) (string, error) {
+	return ProcessICalData(icalData, nil, nil)
+}
+
+// handleHealth provides a simple health check endpoint
+func handleHealth(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"status":"healthy","service":"ical-proxy"}`))
 }
