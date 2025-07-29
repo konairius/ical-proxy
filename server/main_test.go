@@ -32,11 +32,13 @@ END:VCALENDAR`), nil
 }
 
 func TestHandleProxyWithURL(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		icalData := "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Test Event\nDTSTART:20250727T120000Z\nDTEND:20250727T130000Z\nEND:VEVENT\nEND:VCALENDAR"
 		w.Header().Set("Content-Type", "text/calendar")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(icalData))
+		if _, err := w.Write([]byte(icalData)); err != nil {
+			t.Errorf("Failed to write test response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -984,7 +986,7 @@ func TestHealthEndpointInvalidMethod(t *testing.T) {
 
 // Test date filtering functionality
 func TestDateFiltering(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		icalData := `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Test//Test Calendar//EN
@@ -1009,7 +1011,9 @@ END:VEVENT
 END:VCALENDAR`
 		w.Header().Set("Content-Type", "text/calendar")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(icalData))
+		if _, err := w.Write([]byte(icalData)); err != nil {
+			t.Errorf("Failed to write test response: %v", err)
+		}
 	}))
 	defer server.Close()
 
@@ -1082,10 +1086,12 @@ END:VCALENDAR`
 
 // Test date filtering with invalid date formats
 func TestDateFilteringInvalidDates(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "text/calendar")
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR"))
+		if _, err := w.Write([]byte("BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR")); err != nil {
+			t.Errorf("Failed to write test response: %v", err)
+		}
 	}))
 	defer server.Close()
 
