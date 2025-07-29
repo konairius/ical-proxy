@@ -18,13 +18,23 @@ func contains(data, substr string) bool {
 
 func readTestFile(filename string) ([]byte, error) {
 	// Validate filename to prevent path traversal attacks
-	if strings.Contains(filename, "..") || strings.Contains(filename, "/") {
+	if strings.Contains(filename, "..") || strings.Contains(filename, "/") || filename == "" {
 		// Use hardcoded test data for security
-		return []byte(`BEGIN:VCALENDAR`), fmt.Errorf("invalid filename")
+		return []byte(`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Test//EN
+BEGIN:VEVENT
+UID:fallback@test.local
+DTSTART:20250728T120000Z
+DTEND:20250728T130000Z
+SUMMARY:Fallback Test Event
+END:VEVENT
+END:VCALENDAR`), fmt.Errorf("invalid filename")
 	}
 
 	// Try to read the actual file first
-	if data, err := os.ReadFile(filename); err == nil { // #nosec G304 - filename is validated above
+	data, err := os.ReadFile(filename) // #nosec G304 -- filename is validated above to prevent path traversal
+	if err == nil {
 		return data, nil
 	}
 
