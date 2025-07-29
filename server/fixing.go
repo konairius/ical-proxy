@@ -27,7 +27,7 @@ func (fl *FixLog) GetSummary() string {
 	if len(fl.Fixes) == 0 {
 		return "No fixes applied"
 	}
-	return fmt.Sprintf("Applied %d fixes: %s", len(fl.Fixes), strings.Join(fl.Fixes, ", "))
+	return fmt.Sprintf("Applied %d fixes:\n %s", len(fl.Fixes), strings.Join(fl.Fixes, "\n"))
 }
 
 // Comprehensive calendar fixing function that addresses common RFC 5545 compliance issues
@@ -331,7 +331,10 @@ func fixTodo(todo *ics.VTodo) *FixLog {
 func generateUID() string {
 	// Generate a random UID
 	bytes := make([]byte, 16)
-	rand.Read(bytes)
+	if _, err := rand.Read(bytes); err != nil {
+		// Fallback to timestamp-based UID if random generation fails
+		return fmt.Sprintf("%d@ical-proxy.local", time.Now().UnixNano())
+	}
 	return hex.EncodeToString(bytes) + "@ical-proxy.local"
 }
 

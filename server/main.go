@@ -22,8 +22,18 @@ func main() {
 		port = "8080"
 	}
 
+	// Create server with timeouts to address gosec G114
+	server := &http.Server{
+		Addr:           ":" + port,
+		Handler:        nil,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		IdleTimeout:    15 * time.Second,
+		MaxHeaderBytes: 1 << 20, // 1 MB
+	}
+
 	fmt.Printf("Starting server on port %s\n", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Failed to start server on port %s: %v", port, err)
 	}
 }
@@ -53,24 +63,28 @@ func handleProxy(w http.ResponseWriter, r *http.Request) {
 	var fromDate, toDate *time.Time
 
 	if fromParam != "" {
-		if parsed, err := time.Parse("2006-01-02", fromParam); err != nil {
+		parsed, err := time.Parse("2006-01-02", fromParam)
+		if err != nil {
 			http.Error(w, "Invalid 'from' date format. Use YYYY-MM-DD", http.StatusBadRequest)
 			return
-		} else {
-			fromDate = &parsed
 		}
+		fromDate = &parsed
 	}
 
 	if toParam != "" {
-		if parsed, err := time.Parse("2006-01-02", toParam); err != nil {
+		parsed, err := time.Parse("2006-01-02", toParam)
+		if err != nil {
 			http.Error(w, "Invalid 'to' date format. Use YYYY-MM-DD", http.StatusBadRequest)
 			return
-		} else {
-			toDate = &parsed
 		}
+		toDate = &parsed
 	}
 
-	resp, err := http.Get(urlParam)
+	// Use http.Client with timeout to address gosec G107
+	client := &http.Client{
+		Timeout: 30 * time.Second,
+	}
+	resp, err := client.Get(urlParam)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		http.Error(w, "Failed to fetch iCal file", http.StatusInternalServerError)
 		return
@@ -91,7 +105,9 @@ func handleProxy(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/calendar")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(fixedICal))
+	if _, err := w.Write([]byte(fixedICal)); err != nil {
+		log.Printf("Failed to write response: %v", err)
+	}
 }
 
 // ProcessICalData takes raw iCal data and returns a processed version with optional date filtering
@@ -191,13 +207,10 @@ func FixICalData(icalData []byte) (string, error) {
 }
 
 // handleHealth provides a simple health check endpoint
-func handleHealth(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-		return
-	}
-
+func handleHealth(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"status":"healthy","service":"ical-proxy"}`))
+	if _, err := w.Write([]byte(`{"status":"healthy","service":"ical-proxy"}`)); err != nil {
+		log.Printf("Failed to write health response: %v", err)
+	}
 }
