@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ical-proxy-network-policy
+  namespace: ical-proxy
+  labels:
+    app: ical-proxy
+spec:
+  podSelector:
+    matchLabels:
+      app: ical-proxy
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  - {} # Allow all egress traffic (needed for external iCal fetching)
+  # Uncomment below for more restrictive egress
+  # - to: []
+  #   ports:
+  #   - protocol: TCP
+  #     port: 53  # DNS
+  #   - protocol: UDP
+  #     port: 53  # DNS
+  #   - protocol: TCP
+  #     port: 80  # HTTP
+  #   - protocol: TCP
+  #     port: 443 # HTTPS
