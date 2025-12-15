@@ -73,7 +73,7 @@ jobs:
         CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -a -installsuffix cgo -ldflags="-w -s" -o bin/ical-proxy-darwin-arm64 ./server
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: binaries
         path: bin/
