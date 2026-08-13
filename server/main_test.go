@@ -1347,3 +1347,28 @@ func TestParseSummaryRewrite(t *testing.T) {
 		})
 	}
 }
+
+// Absolute is not the same as fetchable: url.Parse accepts file:// and ftp://
+// happily, and net/http would follow anything it has a transport for.
+func TestHandleProxyRejectsNonHTTPSchemes(t *testing.T) {
+	testCases := []string{
+		"file:///etc/passwd",
+		"ftp://example.com/calendar.ics",
+		"gopher://example.com/",
+	}
+
+	for _, target := range testCases {
+		t.Run(target, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodGet, "/proxy?url="+url.QueryEscape(target), nil)
+			w := httptest.NewRecorder()
+			handleProxy(w, req)
+
+			if w.Result().StatusCode != http.StatusBadRequest {
+				t.Errorf("Expected 400 for %q, got %v", target, w.Result().Status)
+			}
+			if !strings.Contains(w.Body.String(), "only http and https") {
+				t.Errorf("Expected a scheme error for %q, got %q", target, w.Body.String())
+			}
+		})
+	}
+}

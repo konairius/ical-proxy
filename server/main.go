@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -19,14 +20,28 @@ func main() {
 	http.HandleFunc("/proxy", handleProxy)
 	http.HandleFunc("/health", handleHealth)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+	// PORT is validated into an int rather than used as a string. It came
+	// straight from the environment into both the listen address and a log
+	// line, which gosec flags as log injection (G706): anything in PORT is
+	// reproduced verbatim in the log, newlines included, so a value like
+	// "8080\nFATAL forged entry" writes a second line of its own.
+	//
+	// Parsing it settles that at the source. A port is a number, an
+	// unparseable one is a misconfiguration worth failing on rather than
+	// quietly ignoring, and once it is an int there is nothing left to
+	// inject — the log below formats %d.
+	port := 8080
+	if raw := os.Getenv("PORT"); raw != "" {
+		parsed, err := strconv.Atoi(raw)
+		if err != nil || parsed < 1 || parsed > 65535 {
+			log.Fatalf("Invalid PORT: expected an integer between 1 and 65535")
+		}
+		port = parsed
 	}
 
 	// Create server with timeouts to address gosec G114
 	server := &http.Server{
-		Addr:           ":" + port,
+		Addr:           fmt.Sprintf(":%d", port),
 		Handler:        nil,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
@@ -34,9 +49,9 @@ func main() {
 		MaxHeaderBytes: 1 << 20, // 1 MB
 	}
 
-	fmt.Printf("Starting server on port %s\n", port)
+	fmt.Printf("Starting server on port %d\n", port)
 	if err := server.ListenAndServe(); err != nil {
-		log.Fatalf("Failed to start server on port %s: %v", port, err)
+		log.Fatalf("Failed to start server on port %d: %v", port, err)
 	}
 }
 
@@ -55,6 +70,15 @@ func handleProxy(w http.ResponseWriter, r *http.Request) {
 	parsedURL, err := url.Parse(urlParam)
 	if err != nil || !parsedURL.IsAbs() {
 		http.Error(w, "Invalid 'url' parameter", http.StatusBadRequest)
+		return
+	}
+
+	// Restrict the scheme. Absolute is not enough: url.Parse happily accepts
+	// file:///etc/passwd and ftp://, and net/http would follow whatever it
+	// has a transport for. A calendar feed is fetched over HTTP or HTTPS and
+	// nothing else.
+	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
+		http.Error(w, "Invalid 'url' parameter: only http and https are supported", http.StatusBadRequest)
 		return
 	}
 
@@ -93,6 +117,14 @@ func handleProxy(w http.ResponseWriter, r *http.Request) {
 	client := &http.Client{
 		Timeout: 30 * time.Second,
 	}
+	// #nosec G704 -- fetching a caller-supplied URL is what this service is
+	// for; a proxy that only fetched a fixed address would not be a proxy.
+	// The request is constrained to what that job needs: the URL must be
+	// absolute and http/https (checked above), the client has a 30s timeout,
+	// and the response is parsed as iCalendar rather than returned raw.
+	// Anything further — an upstream allowlist, or refusing private address
+	// ranges — is a deployment decision, and this one runs behind a
+	// CiliumNetworkPolicy that already bounds where it may connect.
 	resp, err := client.Get(urlParam)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		http.Error(w, "Failed to fetch iCal file", http.StatusInternalServerError)
