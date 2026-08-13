@@ -151,7 +151,7 @@ CGO_ENABLED=0 go build -ldflags="-w -s" -o ical-proxy ./server
 
 ### GET /proxy
 
-Fetches an iCalendar feed from the specified URL, applies RFC 5545 compliance fixes, and optionally filters events by date range.
+Fetches an iCalendar feed from the specified URL, applies RFC 5545 compliance fixes, and optionally filters events by date range and rewrites event summaries.
 
 **Parameters:**
 
@@ -160,6 +160,22 @@ Fetches an iCalendar feed from the specified URL, applies RFC 5545 compliance fi
 | `url` | Yes | Absolute URL | URL of the iCalendar feed to proxy |
 | `from` | No | `YYYY-MM-DD` | Start date for event filtering (inclusive) |
 | `to` | No | `YYYY-MM-DD` | End date for event filtering (inclusive) |
+| `summary_match` | No | Regular expression | Matched against every event's `SUMMARY`. Max 512 characters |
+| `summary_replace` | No | Replacement text | What `summary_match` is replaced with. Defaults to empty, i.e. strip. Capture groups are available as `$1`, `$2`, … |
+
+**SUMMARY rewriting:**
+
+Some publishers append the name of the whole calendar to every event, so a single bin collection arrives as `Altpapier| Abfuhrkalender - Landkreis Amberg-Sulzbach` — one useful word followed by fifty characters repeated identically on every event in the feed. Calendar clients render `SUMMARY` verbatim and generally offer no way to shorten it, so the text has to be fixed before it reaches them.
+
+```bash
+# Strip everything from the first pipe onwards -> "Altpapier"
+curl "http://localhost:8080/proxy?url=https://example.com/waste.ics&summary_match=%5Cs*%7C.*%24"
+
+# Keep the fraction and prefix it -> "Abfuhr: Altpapier"
+curl "http://localhost:8080/proxy?url=https://example.com/waste.ics&summary_match=%5E(%5B%5E%7C%5D%2B%3F)%5Cs*%7C.*%24&summary_replace=Abfuhr%3A%20%241"
+```
+
+Patterns use [RE2](https://github.com/google/re2/wiki/Syntax), which matches in time linear to the input and has no catastrophic backtracking, so a caller-supplied expression cannot be used to stall the server. A rewrite that would leave `SUMMARY` empty is skipped and the original text kept — an untitled event is worse than a long title.
 
 **Response:**
 

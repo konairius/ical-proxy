@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"strings"
 	"testing"
@@ -1202,6 +1203,171 @@ func TestProxyEndpointErrors(t *testing.T) {
 			responseBody := w.Body.String()
 			if !strings.Contains(responseBody, tc.expectedMsg) {
 				t.Errorf("Expected error message containing '%s', got '%s'", tc.expectedMsg, responseBody)
+			}
+		})
+	}
+}
+
+// wasteCalendarServer serves a feed shaped like the real one this feature was
+// written for: every event's SUMMARY carries the fraction followed by the name
+// of the whole calendar. Note the two spacings around the pipe — the upstream
+// is inconsistent about it, so the pattern has to tolerate both.
+func wasteCalendarServer(t *testing.T) *httptest.Server {
+	t.Helper()
+	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		icalData := "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Test//EN\r\n" +
+			"BEGIN:VEVENT\r\nUID:1@test.local\r\nDTSTART:20260814T060000Z\r\nDTEND:20260814T070000Z\r\n" +
+			"SUMMARY:Altpapier| Abfuhrkalender - Landkreis Amberg-Sulzbach\r\nEND:VEVENT\r\n" +
+			"BEGIN:VEVENT\r\nUID:2@test.local\r\nDTSTART:20260821T060000Z\r\nDTEND:20260821T070000Z\r\n" +
+			"SUMMARY:Restmüll | Abfuhrkalender - Landkreis Amberg-Sulzbach\r\nEND:VEVENT\r\n" +
+			"END:VCALENDAR"
+		w.Header().Set("Content-Type", "text/calendar")
+		w.WriteHeader(http.StatusOK)
+		if _, err := w.Write([]byte(icalData)); err != nil {
+			t.Errorf("Failed to write test response: %v", err)
+		}
+	}))
+}
+
+func TestHandleProxySummaryRewrite(t *testing.T) {
+	upstream := wasteCalendarServer(t)
+	defer upstream.Close()
+
+	// Strip from the pipe onwards, tolerating the space the feed sometimes
+	// puts before it.
+	target := "/proxy?url=" + url.QueryEscape(upstream.URL) +
+		"&summary_match=" + url.QueryEscape(`\s*\|.*$`)
+
+	req := httptest.NewRequest(http.MethodGet, target, nil)
+	w := httptest.NewRecorder()
+	handleProxy(w, req)
+
+	if w.Result().StatusCode != http.StatusOK {
+		t.Fatalf("Expected status OK, got %v", w.Result().Status)
+	}
+
+	body := w.Body.String()
+	for _, want := range []string{"SUMMARY:Altpapier", "SUMMARY:Restmüll"} {
+		if !strings.Contains(body, want) {
+			t.Errorf("Expected rewritten %q in response, got:\n%s", want, body)
+		}
+	}
+	if strings.Contains(body, "Abfuhrkalender") {
+		t.Errorf("Expected the calendar name to be stripped from every SUMMARY, got:\n%s", body)
+	}
+}
+
+func TestHandleProxySummaryRewriteWithCaptureGroup(t *testing.T) {
+	upstream := wasteCalendarServer(t)
+	defer upstream.Close()
+
+	target := "/proxy?url=" + url.QueryEscape(upstream.URL) +
+		"&summary_match=" + url.QueryEscape(`^([^|]+?)\s*\|.*$`) +
+		"&summary_replace=" + url.QueryEscape(`Abfuhr: $1`)
+
+	req := httptest.NewRequest(http.MethodGet, target, nil)
+	w := httptest.NewRecorder()
+	handleProxy(w, req)
+
+	body := w.Body.String()
+	if !strings.Contains(body, "SUMMARY:Abfuhr: Altpapier") {
+		t.Errorf("Expected capture group substitution, got:\n%s", body)
+	}
+}
+
+// A rewrite that empties the SUMMARY must be ignored rather than applied.
+// Serving an event with no title is worse than serving a long one.
+func TestHandleProxySummaryRewriteKeepsNonEmpty(t *testing.T) {
+	upstream := wasteCalendarServer(t)
+	defer upstream.Close()
+
+	target := "/proxy?url=" + url.QueryEscape(upstream.URL) +
+		"&summary_match=" + url.QueryEscape(`.*`)
+
+	req := httptest.NewRequest(http.MethodGet, target, nil)
+	w := httptest.NewRecorder()
+	handleProxy(w, req)
+
+	body := w.Body.String()
+	if !strings.Contains(body, "SUMMARY:Altpapier| Abfuhrkalender - Landkreis Amberg-Sulzbach") {
+		t.Errorf("Expected the original SUMMARY to survive an emptying rewrite, got:\n%s", body)
+	}
+}
+
+func TestParseSummaryRewrite(t *testing.T) {
+	testCases := []struct {
+		name      string
+		query     string
+		expectNil bool
+		expectErr string
+	}{
+		{name: "absent", query: "", expectNil: true},
+		{name: "match only", query: "summary_match=" + url.QueryEscape(`\|.*$`)},
+		{
+			name:      "replace without match",
+			query:     "summary_replace=x",
+			expectErr: "requires 'summary_match'",
+		},
+		{
+			name:      "invalid expression",
+			query:     "summary_match=" + url.QueryEscape(`([`),
+			expectErr: "invalid 'summary_match'",
+		},
+		{
+			name:      "over-long expression",
+			query:     "summary_match=" + strings.Repeat("a", 513),
+			expectErr: "at most 512 characters",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			values, err := url.ParseQuery(tc.query)
+			if err != nil {
+				t.Fatalf("bad test query: %v", err)
+			}
+
+			rewrite, err := parseSummaryRewrite(values)
+
+			if tc.expectErr != "" {
+				if err == nil || !strings.Contains(err.Error(), tc.expectErr) {
+					t.Fatalf("Expected error containing %q, got %v", tc.expectErr, err)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("Unexpected error: %v", err)
+			}
+			if tc.expectNil && rewrite != nil {
+				t.Errorf("Expected no rewrite, got %+v", rewrite)
+			}
+			if !tc.expectNil && rewrite == nil {
+				t.Error("Expected a rewrite, got nil")
+			}
+		})
+	}
+}
+
+// Absolute is not the same as fetchable: url.Parse accepts file:// and ftp://
+// happily, and net/http would follow anything it has a transport for.
+func TestHandleProxyRejectsNonHTTPSchemes(t *testing.T) {
+	testCases := []string{
+		"file:///etc/passwd",
+		"ftp://example.com/calendar.ics",
+		"gopher://example.com/",
+	}
+
+	for _, target := range testCases {
+		t.Run(target, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodGet, "/proxy?url="+url.QueryEscape(target), nil)
+			w := httptest.NewRecorder()
+			handleProxy(w, req)
+
+			if w.Result().StatusCode != http.StatusBadRequest {
+				t.Errorf("Expected 400 for %q, got %v", target, w.Result().Status)
+			}
+			if !strings.Contains(w.Body.String(), "only http and https") {
+				t.Errorf("Expected a scheme error for %q, got %q", target, w.Body.String())
 			}
 		})
 	}
