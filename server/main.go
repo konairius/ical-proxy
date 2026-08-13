@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"regexp"
+	"strings"
 	"time"
 
 	ics "github.com/arran4/golang-ical"
@@ -56,6 +58,13 @@ func handleProxy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Parse optional SUMMARY rewriting parameters
+	rewrite, err := parseSummaryRewrite(r.URL.Query())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	// Parse optional date filtering parameters
 	fromParam := r.URL.Query().Get("from")
 	toParam := r.URL.Query().Get("to")
@@ -101,7 +110,7 @@ func handleProxy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fixedICal, err := ProcessICalData(icalData, fromDate, toDate)
+	fixedICal, err := ProcessICalData(icalData, fromDate, toDate, rewrite)
 	if err != nil {
 		http.Error(w, "Failed to process iCal data: "+err.Error(), http.StatusBadRequest)
 		return
@@ -114,8 +123,86 @@ func handleProxy(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// ProcessICalData takes raw iCal data and returns a processed version with optional date filtering
-func ProcessICalData(icalData []byte, fromDate, toDate *time.Time) (string, error) {
+// SummaryRewrite is an optional substitution applied to every VEVENT SUMMARY.
+//
+// Some upstream feeds append the name of the whole calendar to every single
+// event, so a bin collection arrives as
+//
+//	Altpapier| Abfuhrkalender - Landkreis Amberg-Sulzbach
+//
+// which is one useful word followed by fifty characters that are identical on
+// every event in the feed. Consumers cannot fix this: the text is what the
+// publisher put in SUMMARY, and calendar clients render it verbatim.
+type SummaryRewrite struct {
+	// Pattern is matched against the existing SUMMARY.
+	Pattern *regexp.Regexp
+	// Replacement may reference capture groups as $1, $2 and so on.
+	Replacement string
+}
+
+// parseSummaryRewrite reads the summary_match and summary_replace parameters.
+// Returns nil (and no error) when no rewriting was requested.
+func parseSummaryRewrite(query url.Values) (*SummaryRewrite, error) {
+	match := query.Get("summary_match")
+	replace := query.Get("summary_replace")
+
+	if match == "" {
+		if replace != "" {
+			return nil, fmt.Errorf("'summary_replace' requires 'summary_match'")
+		}
+		return nil, nil
+	}
+
+	// Bounded so a pathological pattern cannot be handed to the compiler.
+	// Matching itself is safe regardless: Go's regexp is RE2, which runs in
+	// time linear in the input and has no catastrophic backtracking.
+	const maxPatternLen = 512
+	if len(match) > maxPatternLen {
+		return nil, fmt.Errorf("'summary_match' must be at most %d characters", maxPatternLen)
+	}
+
+	pattern, err := regexp.Compile(match)
+	if err != nil {
+		return nil, fmt.Errorf("invalid 'summary_match' expression: %w", err)
+	}
+
+	return &SummaryRewrite{Pattern: pattern, Replacement: replace}, nil
+}
+
+// rewriteSummaries applies the substitution to every event's SUMMARY and
+// returns the number of events changed.
+//
+// An event whose rewritten SUMMARY would be empty is left alone. Trading a
+// too-long title for no title at all is not an improvement, and it would strip
+// a property that RFC 5545 expects to carry the event's display text.
+func rewriteSummaries(calendar *ics.Calendar, rewrite *SummaryRewrite) int {
+	if rewrite == nil {
+		return 0
+	}
+
+	changed := 0
+	for _, event := range calendar.Events() {
+		prop := event.GetProperty(ics.ComponentPropertySummary)
+		if prop == nil {
+			continue
+		}
+
+		original := prop.Value
+		rewritten := strings.TrimSpace(rewrite.Pattern.ReplaceAllString(original, rewrite.Replacement))
+		if rewritten == "" || rewritten == original {
+			continue
+		}
+
+		event.SetProperty(ics.ComponentPropertySummary, rewritten)
+		changed++
+	}
+
+	return changed
+}
+
+// ProcessICalData takes raw iCal data and returns a processed version with
+// optional date filtering and optional SUMMARY rewriting
+func ProcessICalData(icalData []byte, fromDate, toDate *time.Time, rewrite *SummaryRewrite) (string, error) {
 	if len(icalData) == 0 {
 		return "", fmt.Errorf("empty iCal data")
 	}
@@ -130,6 +217,12 @@ func ProcessICalData(icalData []byte, fromDate, toDate *time.Time) (string, erro
 	// Apply date filtering if specified
 	if fromDate != nil || toDate != nil {
 		filterEventsByDate(calendar, fromDate, toDate)
+	}
+
+	// Rewrite summaries before the compliance pass, so the fixer sees the
+	// text that will actually be served.
+	if changed := rewriteSummaries(calendar, rewrite); changed > 0 {
+		log.Printf("Rewrote SUMMARY on %d event(s)", changed)
 	}
 
 	// Apply comprehensive fixes to ensure RFC 5545 compliance
@@ -207,7 +300,7 @@ func parseEventDate(dateStr string) (time.Time, error) {
 
 // FixICalData is kept for backward compatibility but now uses ProcessICalData
 func FixICalData(icalData []byte) (string, error) {
-	return ProcessICalData(icalData, nil, nil)
+	return ProcessICalData(icalData, nil, nil, nil)
 }
 
 // handleHealth provides a simple health check endpoint
